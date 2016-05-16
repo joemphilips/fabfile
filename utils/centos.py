@@ -14,7 +14,10 @@ GIT_VERSION="2.8.2"
 
 @task
 def _update_git():
-    sudo("yum remove git")
+    current_version=run('git --version | cut -d" " -f3')
+    if current_version == GIT_VERSION:
+        return
+    sudo("yum -y remove git")
     for git_dependency in git_dependencies:
         package_ensure(git_dependency)
     run("wget https://www.kernel.org/pub/software/scm/git/git-%s.tar.gz" % GIT_VERSION)
@@ -22,4 +25,3 @@ def _update_git():
     with cd("git-%s" % GIT_VERSION):
         sudo("make prefix=/usr/local all")
         sudo("make prefix=/usr/local install")
-
