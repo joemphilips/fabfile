@@ -25,3 +25,9 @@ def _update_git():
     with cd("git-%s" % GIT_VERSION):
         sudo("make prefix=/usr/local all")
         sudo("make prefix=/usr/local install")
+
+
+def _prerequisits():
+    package_ensure("epel-release")
+
+_prerequisits()
