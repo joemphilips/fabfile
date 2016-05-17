@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from fabric.api import sudo, run, cd, task
 from cuisine import package_ensure
+from config import NCC_proxy
 import cuisine
 cuisine.select_package("yum")
 git_dependencies = ["curl-devel",
