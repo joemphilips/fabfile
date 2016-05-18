@@ -28,7 +28,3 @@ def _update_git():
         sudo("make prefix=/usr/local install")
 
 
-def _prerequisits():
-    package_ensure("epel-release")
-
-_prerequisits()
