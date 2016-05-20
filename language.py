@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from cuisine import package_ensure
+from cuisine import package_ensure, dir_exists
 from fabric.api import *
+from fabric.context_managers import path
 
 @task
 def python():
@@ -13,6 +14,18 @@ def python():
 def js():
     node_js()
     frontend()
+
+@task
+def perl():
+    if not dir_exists("~/.plenv"):
+        run("git clone https://github.com/tokuhirom/plenv.git ~/.plenv/")
+        run("git clone https://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/")
+    with path("~/.plenv/bin:~/.plenv/shims"):
+        run("plenv install 5.18.1")
+        run("plenv global 5.18.1")
+        run("plenv install-cpanm")
+        run("cpanm --self-upgrade")
+
 
 def _system_pip():
     package_ensure("epel-release")
