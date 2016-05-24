@@ -24,8 +24,36 @@ def perl():
         run("eval '$(plenv init -)'")
         run("plenv install 5.18.1")
         run("plenv global 5.18.1")
-        run("plenv install-cpanm")
+        run("PLENV_INSTALL_CPANM='-v' plenv install-cpanm")
         run("cpanm --self-upgrade")
+
+
+@task
+def R():
+    _install_R("3.2.5")
+    _install_R("2.15.3")
+    _rstudio_server()
+
+
+def _install_R(version):
+    prefix = "$HOME/bin/R-{}".format(version)
+    if dir_exists(prefix):
+        return
+    major_version = version[0]
+    url = "https://cran.ism.ac.jp/src/base/R-{}/R-{}.tar.gz".\
+        format(major_version, version)
+    with cd("/tmp"):
+        run("wget {}".format(url))
+        run("tar xzvf R-{}.tar.gz".format(version))
+        with cd("R-{}".format(version)):
+            run("./configure --prefix={} --with-x=no".format(prefix))
+            run("make && make install")
+
+def _rstudio_server():
+    if run('which rstudio-server').return_code == 0:
+        return
+    run("wget http://download2.rstudio.org/rstudio-server-rhel-0.99.441-x86_64.rpm")
+    sudo("yum -y install --nogpgcheck rstudio-server-rhel-0.99.441-x86_64.rpm")
 
 
 def _system_pip():
