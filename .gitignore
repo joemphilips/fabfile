@@ -1,0 +1,10 @@
+.vim/bundle
+.python*
+*.swp
+*.pyc
+*.ipynb*
+ssh/*
+!ssh/config
+atom
+.python-version
+.*nohup.out
