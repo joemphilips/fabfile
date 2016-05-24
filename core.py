@@ -26,5 +26,12 @@ def update_git():
     with cd("git-%s" % GIT_VERSION):
         sudo("make prefix=/usr/local all")
         sudo("make prefix=/usr/local install")
+    _install_git_subtree()
 
+
+def _install_git_subtree():
+    with cd("/tmp"):
+        run("curl http://git.kernel.org/cgit/git/git.git/plain/contrib/subtree/git-subtree.sh > git-subtree")
+        sudo("mv git-subtree /usr/local/bin")
+        sudo("chmod a+x /usr/local/bin/git-subtree")
 
